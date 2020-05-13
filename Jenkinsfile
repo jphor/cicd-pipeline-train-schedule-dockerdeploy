@@ -17,7 +17,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build(${env.registry})
+                    app = docker.build("${env.registry}")
                     app.inside {
                         sh 'echo $(curl localhost:8080)'
                     }
