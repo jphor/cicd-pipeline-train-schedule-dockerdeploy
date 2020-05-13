@@ -29,7 +29,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                scripts {
+                script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
@@ -42,7 +42,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                scripts {
+                script {
                     input 'Deploy to Production?'
                     milestone(1)
                     withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
@@ -56,7 +56,6 @@ pipeline {
                         }
                         sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d jphor/train-schedule:${env.BUILD_NUMBER}\""
                     }
-                }
                 }
             }
         }
